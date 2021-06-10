@@ -1,9 +1,9 @@
-﻿@page "/upcoming-movies"
+﻿@page "/now-playing"
 @using WatchFlix.Core.Services
 
 @inject IMovieService _movieService
 
-<h3>Upcoming Movies</h3>
+<h3>Now playing</h3>
 
 <button class="btn btn-primary" @onclick="FetchMovies">Hämta filmer</button>
 
@@ -19,6 +19,6 @@
     
     private async Task FetchMovies()
     {
-        _movies = await _movieService.ListUpcomingMovies();
+        _movies = await _movieService.ListNowPlayingMovies();
     }
 }
