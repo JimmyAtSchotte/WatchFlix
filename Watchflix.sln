@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watchflix", "Watchflix\Watchflix.csproj", "{BD19C3EA-0D87-4E40-A04C-E57966BAE0F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchFlix.Tests", "WatchFlix.Tests\WatchFlix.Tests.csproj", "{113857BC-1A5D-489E-B6E1-9DB231850B0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{BD19C3EA-0D87-4E40-A04C-E57966BAE0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD19C3EA-0D87-4E40-A04C-E57966BAE0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD19C3EA-0D87-4E40-A04C-E57966BAE0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113857BC-1A5D-489E-B6E1-9DB231850B0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113857BC-1A5D-489E-B6E1-9DB231850B0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113857BC-1A5D-489E-B6E1-9DB231850B0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113857BC-1A5D-489E-B6E1-9DB231850B0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
