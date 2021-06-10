@@ -9,7 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TMDbLib.Client;
+using WatchFlix.Core.Services;
 using Watchflix.Data;
+using WatchFlix.Services;
 
 namespace Watchflix
 {
@@ -29,6 +32,8 @@ namespace Watchflix
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped(_ => new TMDbClient("9d9273dd0511107b21baa2cb13b70181"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

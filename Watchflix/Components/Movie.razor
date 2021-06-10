@@ -1,0 +1,15 @@
+﻿@using WatchFlix.Core.Services
+
+<div class="card" style="width: 18rem;">
+  <img src="@Item.Poster" class="card-img-top" alt="@Item.Title">
+  <div class="card-body">
+    <h5 class="card-title">@Item.Title</h5>
+  </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public IMovie Item { get; set; }
+
+}

@@ -33,12 +33,18 @@ namespace WatchFlix.Services
         public async Task<IEnumerable<IMovie>> ListNowPlayingMovies()
         {
             var movies = await _client.GetMovieNowPlayingListAsync();
+            
+            
             return movies.Results.Select(ConvertToMovie());
         }
         
         private static Func<SearchMovie, Movie> ConvertToMovie()
         {
-            return x => new Movie();
+            return searchMovie =>new Movie()
+                {
+                    Title = searchMovie.Title,
+                    Poster =  $"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{searchMovie.PosterPath}"
+                };
         }
     }
 }
