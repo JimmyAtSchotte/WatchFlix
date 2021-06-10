@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TMDbLib.Client;
@@ -17,15 +18,27 @@ namespace WatchFlix.Services
             _client = client;
         }
         
-        public async Task<IEnumerable<IMovie>> List()
+        public async Task<IEnumerable<IMovie>> ListTopRatedMovies()
         {
-            var movies = await _client.GetTrendingMoviesAsync(TimeWindow.Day);
-            return movies.Results.Select(x => new Movie());
+            var movies = await _client.GetMovieTopRatedListAsync();
+            return movies.Results.Select(ConvertToMovie());
         }
-    }
+     
+        public async Task<IEnumerable<IMovie>> ListUpcomingMovies()
+        {
+            var movies = await _client.GetMovieUpcomingListAsync();
+            return movies.Results.Select(ConvertToMovie());
+        }
 
-    public class Movie : IMovie
-    {
-
+        public async Task<IEnumerable<IMovie>> ListNowPlayingMovies()
+        {
+            var movies = await _client.GetMovieNowPlayingListAsync();
+            return movies.Results.Select(ConvertToMovie());
+        }
+        
+        private static Func<SearchMovie, Movie> ConvertToMovie()
+        {
+            return x => new Movie();
+        }
     }
 }

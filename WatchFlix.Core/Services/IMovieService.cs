@@ -5,10 +5,8 @@ namespace WatchFlix.Core.Services
 {
     public interface IMovieService
     {
-        Task<IEnumerable<IMovie>> List();
-    }
-
-    public interface IMovie
-    {
+        Task<IEnumerable<IMovie>> ListTopRatedMovies();
+        Task<IEnumerable<IMovie>> ListUpcomingMovies();
+        Task<IEnumerable<IMovie>> ListNowPlayingMovies();
     }
 }
