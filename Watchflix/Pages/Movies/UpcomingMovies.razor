@@ -1,0 +1,24 @@
+﻿@page "/upcoming-movies"
+@using WatchFlix.Core.Services
+
+@inject IMovieService _movieService
+
+<h3>Upcomming Movies</h3>
+
+<button class="btn btn-primary" @onclick="FetchMovies">Hämta filmer</button>
+
+@foreach (var movie in _movies)
+{
+    <Movie Item="movie"></Movie>
+}
+
+
+
+@code {
+    private IEnumerable<IMovie> _movies = Enumerable.Empty<IMovie>();
+    
+    private async Task FetchMovies()
+    {
+        _movies = await _movieService.ListUpcomingMovies();
+    }
+}
