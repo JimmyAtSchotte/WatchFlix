@@ -20,5 +20,6 @@ namespace WatchFlix.Tests.Services.MovieService
             
             Assert.IsNotEmpty(movies);
         }
+        
     }
 }

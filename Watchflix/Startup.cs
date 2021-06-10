@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TMDbLib.Client;
 using WatchFlix.Core.Services;
-using Watchflix.Data;
 using WatchFlix.Services;
 
 namespace Watchflix
@@ -31,7 +24,6 @@ namespace Watchflix
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddScoped<IMovieService, MovieService>();
             services.AddScoped(_ => new TMDbClient("9d9273dd0511107b21baa2cb13b70181"));
         }
