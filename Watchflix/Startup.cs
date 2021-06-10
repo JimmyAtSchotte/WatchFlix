@@ -25,7 +25,7 @@ namespace Watchflix
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<IMovieService, MovieService>();
-            services.AddScoped(_ => new TMDbClient("9d9273dd0511107b21baa2cb13b70181"));
+            services.AddScoped(_ => new TMDbClient(Configuration.GetValue<string>("TMDB_API_KEY")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
