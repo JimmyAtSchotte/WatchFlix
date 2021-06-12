@@ -25,6 +25,7 @@ namespace Watchflix
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<IMovieService, MovieService>();
+            services.AddScoped<ITMDbClientWrapper, TMDbClientWrapper>();
             services.AddScoped(_ => new TMDbClient(Configuration.GetValue<string>("TMDB_API_KEY")));
         }
 

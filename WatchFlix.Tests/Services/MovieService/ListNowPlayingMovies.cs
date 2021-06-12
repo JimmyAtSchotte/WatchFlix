@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using TMDbLib.Client;
 using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using WatchFlix.Core.Services;
+using WatchFlix.Services;
 using WatchFlix.Tests.Extensions;
 
 namespace WatchFlix.Tests.Services.MovieService
@@ -20,7 +22,11 @@ namespace WatchFlix.Tests.Services.MovieService
         [Test]
         public async Task ShouldListTopRatedMovies()
         {
-            var arrange = Arrange.Dependencies<IMovieService, WatchFlix.Services.MovieService>(dependencies => dependencies.UseTMDbClient());
+            var arrange = Arrange.Dependencies<IMovieService, WatchFlix.Services.MovieService>(dependencies =>
+            {
+                dependencies.UseImplementation<ITMDbClientWrapper, TMDbClientWrapper>();
+                dependencies.UseTMDbClient();
+            });
             
             var movieSerivce = arrange.Resolve<IMovieService>();
             
@@ -29,7 +35,6 @@ namespace WatchFlix.Tests.Services.MovieService
             Assert.IsNotEmpty(movies);
         }
         
-        [Ignore("Non-overridable members (here: TMDbClient.GetMovieNowPlayingListAsync) may not be used in setup / verification expressions.")]
         [Test]
         public async Task ShouldSetProperties()
         {
@@ -41,9 +46,9 @@ namespace WatchFlix.Tests.Services.MovieService
             
             var arrange = Arrange.Dependencies<IMovieService, WatchFlix.Services.MovieService>(dependencies =>
             {
-                dependencies.UseMock<TMDbClient>(mock =>
+                dependencies.UseMock<ITMDbClientWrapper>(mock =>
                 {
-                    mock.Setup(x => x.GetMovieNowPlayingListAsync(null, 0, null, default(CancellationToken)))
+                    mock.Setup(x => x.GetMovieNowPlayingListAsync())
                         .Returns(Task.FromResult(new SearchContainerWithDates<SearchMovie>()
                         {
                             Results = new List<SearchMovie>()
@@ -61,8 +66,50 @@ namespace WatchFlix.Tests.Services.MovieService
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(movie.Title, result.Title);
-                Assert.AreEqual(movie.PosterPath, result.Poster);
+                Assert.AreEqual($"https://www.themoviedb.org/t/p/w300_and_h450_bestv2/{movie.PosterPath}", result.Poster);
             });
+        }
+        
+        [TestCase(1)]
+        [TestCase(10)]
+        public async Task ShouldReturnListOfResultWithCount(int count)
+        {
+            var arrange = Arrange.Dependencies<IMovieService, WatchFlix.Services.MovieService>(dependencies =>
+            {
+                dependencies.UseMock<ITMDbClientWrapper>(mock =>
+                {
+                    mock.Setup(x => x.GetMovieNowPlayingListAsync())
+                        .Returns(Task.FromResult(new SearchContainerWithDates<SearchMovie>()
+                        {
+                            Results = Enumerable.Range(0, count).Select(_ => new SearchMovie()).ToList()
+                        }));
+                });
+            });
+            
+            var movieSerivce = arrange.Resolve<IMovieService>();
+
+            var result = await movieSerivce.ListNowPlayingMovies();
+            
+            Assert.AreEqual(count, result.Count());
+        }
+        
+        [Test]
+        public async Task ShouldReturnEmptyListWhenAPIThrows()
+        {
+            var arrange = Arrange.Dependencies<IMovieService, WatchFlix.Services.MovieService>(dependencies =>
+            {
+                dependencies.UseMock<ITMDbClientWrapper>(mock =>
+                {
+                    mock.Setup(x => x.GetMovieNowPlayingListAsync())
+                        .Throws<Exception>();
+                });
+            });
+            
+            var movieSerivce = arrange.Resolve<IMovieService>();
+
+            var result = await movieSerivce.ListNowPlayingMovies();
+            
+            Assert.IsEmpty(result);
         }
     }
 }

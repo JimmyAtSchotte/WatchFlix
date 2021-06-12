@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TMDbLib.Client;
+using Microsoft.Extensions.Logging;
+using TMDbLib.Objects.General;
 using TMDbLib.Objects.Search;
 using TMDbLib.Objects.Trending;
 using WatchFlix.Core.Services;
@@ -11,31 +12,59 @@ namespace WatchFlix.Services
 {
     public class MovieService : IMovieService
     {
-        private readonly TMDbClient _client;
+        private readonly ITMDbClientWrapper _client;
+        private readonly ILogger _logger;
 
-        public MovieService(TMDbClient client)
+        public MovieService(ITMDbClientWrapper client, ILogger<MovieService> logger)
         {
             _client = client;
+            _logger = logger;
         }
         
         public async Task<IEnumerable<IMovie>> ListTopRatedMovies()
         {
-            var movies = await _client.GetMovieTopRatedListAsync();
-            return movies.Results.Select(ConvertToMovie());
+            try
+            {
+                var movies = await _client.GetMovieTopRatedListAsync();
+                return movies.Results.Select(ConvertToMovie());
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
+          
+            return Enumerable.Empty<IMovie>();
         }
      
         public async Task<IEnumerable<IMovie>> ListUpcomingMovies()
         {
-            var movies = await _client.GetMovieUpcomingListAsync();
-            return movies.Results.Select(ConvertToMovie());
+            try
+            {
+                var movies = await _client.GetMovieUpcomingListAsync();
+                return movies.Results.Select(ConvertToMovie());
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
+            
+            return Enumerable.Empty<IMovie>();
         }
 
         public async Task<IEnumerable<IMovie>> ListNowPlayingMovies()
         {
-            var movies = await _client.GetMovieNowPlayingListAsync();
+            try
+            {
+                var movies = await _client.GetMovieNowPlayingListAsync();
+
+                return movies.Results.Select(ConvertToMovie());
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+            }
             
-            
-            return movies.Results.Select(ConvertToMovie());
+            return Enumerable.Empty<IMovie>();
         }
         
         private static Func<SearchMovie, Movie> ConvertToMovie()
@@ -47,4 +76,6 @@ namespace WatchFlix.Services
                 };
         }
     }
+
+  
 }
