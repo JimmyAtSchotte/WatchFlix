@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchFlix.Core", "WatchFlix
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchFlix.Services", "WatchFlix.Services\WatchFlix.Services.csproj", "{852D6DC7-2C55-4099-AB29-B8A20FAE84A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{ED373876-5482-4AA8-A70E-FDBB40330B69}"
+ProjectSection(SolutionItems) = preProject
+	Dockerfile = Dockerfile
+	README.md = README.md
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
